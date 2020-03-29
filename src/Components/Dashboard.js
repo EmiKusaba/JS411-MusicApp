@@ -33,12 +33,20 @@ class OnlineSwitch extends React.Component {
     });
   }
 
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.online !== this.state.online) {
+      if (!this.state.online) {
+        this.props.addNotification("Your application is offline. You won't be able to share or stream music to other devices.");
+      }
+    }
+  }
+
   render() {
     return (
       <FormGroup row>
         <FormControlLabel
           control={<Switch checked={this.state.online} onChange={this.handleChange} name="online" />}
-          label="Online"
+          label={this.state.online ? "Online" : "Offline"}
         />
       </FormGroup>
     );
@@ -63,6 +71,14 @@ class VolumeSlider extends React.Component {
     });
   }
 
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.value < this.state.value) {
+      if (this.state.value > 80) {
+        this.props.addNotification("Listening to music at a high volume could cause long-term hearing loss.");
+      }
+    }
+  }
+
   render() {
     return (
       <div style={{ width: "200px" }}>
@@ -71,7 +87,15 @@ class VolumeSlider extends React.Component {
             <VolumeDown />
           </Grid>
           <Grid item xs>
-            <Slider value={this.value} onChange={this.handleChange} aria-labelledby="continuous-slider" />
+            <Slider
+              value={this.state.value}
+              onChange={this.handleChange}
+              aria-labelledby="continuous-slider"
+              step={10}
+              marks
+              min={0}
+              max={100}
+            />
           </Grid>
           <Grid item>
             <VolumeUp />
@@ -99,6 +123,15 @@ class SoundQuality extends React.Component {
       quality: event.target.value,
     });
   }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.quality !== this.state.quality) {
+      if (this.state.quality === "low") {
+        this.props.addNotification("Music quality has degraded. Increase quality if your connection allows it.");
+      }
+    }
+  }
+
   render() {
     return (
       <div>
@@ -121,6 +154,23 @@ class SoundQuality extends React.Component {
 }
 
 export class Dashboard extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      notifications: [],
+    };
+
+    this.addNotification = this.addNotification.bind(this);
+  }
+
+  addNotification(msg) {
+    const notifications = [...this.state.notifications, msg];
+    this.setState({
+      notifications: notifications,
+    })
+    console.log(notifications);
+  }
+
   render() {
     return (
       <div>
@@ -129,7 +179,7 @@ export class Dashboard extends React.Component {
             <Typography color="textSecondary" gutterBottom>
               Online Mode :
               </Typography>
-            <OnlineSwitch />
+            <OnlineSwitch addNotification={this.addNotification} />
           </CardContent>
         </Card>
 
@@ -138,7 +188,7 @@ export class Dashboard extends React.Component {
             <Typography color="textSecondary" gutterBottom>
               Master Volume
             </Typography>
-            <VolumeSlider />
+            <VolumeSlider addNotification={this.addNotification} />
           </CardContent>
         </Card>
 
@@ -147,9 +197,20 @@ export class Dashboard extends React.Component {
             <Typography color="textSecondary" gutterBottom>
               Sound Quality
             </Typography>
-            <SoundQuality />
+            <SoundQuality addNotification={this.addNotification} />
           </CardContent>
         </Card>
+
+        <div>
+          <h3>System Notifcations</h3>
+          <ul>
+            {this.state.notifications.map((msg, i) => {
+              return (
+                <li key={i}>{msg}</li>
+              );
+            })}
+          </ul>
+        </div>
       </div>
     );
   }
