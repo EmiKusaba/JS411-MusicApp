@@ -2,6 +2,7 @@ import React from 'react';
 //t { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
+import CardActions from '@material-ui/core/CardActions';
 import Typography from '@material-ui/core/Typography';
 import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
@@ -14,6 +15,8 @@ import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import Container from '@material-ui/core/Container';
 
 //For Online here
 class OnlineSwitch extends React.Component {
@@ -101,6 +104,7 @@ class VolumeSlider extends React.Component {
             <VolumeUp />
           </Grid>
         </Grid>
+
       </div>
     );
   }
@@ -174,12 +178,17 @@ export class Dashboard extends React.Component {
   render() {
     return (
       <div>
+            <React.Fragment>
+      <CssBaseline />
+      <Container maxWidth="sm">
         <Card className="Card">
           <CardContent>
             <Typography color="textSecondary" gutterBottom>
               Online Mode :
               </Typography>
+              <CardActions>
             <OnlineSwitch addNotification={this.addNotification} />
+            </CardActions>
           </CardContent>
         </Card>
 
@@ -188,7 +197,9 @@ export class Dashboard extends React.Component {
             <Typography color="textSecondary" gutterBottom>
               Master Volume
             </Typography>
+            <CardActions>
             <VolumeSlider addNotification={this.addNotification} />
+            </CardActions>
           </CardContent>
         </Card>
 
@@ -197,10 +208,12 @@ export class Dashboard extends React.Component {
             <Typography color="textSecondary" gutterBottom>
               Sound Quality
             </Typography>
+            <CardActions>
             <SoundQuality addNotification={this.addNotification} />
+            </CardActions>
           </CardContent>
+         
         </Card>
-
         <div>
           <h3>System Notifcations</h3>
           <ul>
@@ -211,6 +224,8 @@ export class Dashboard extends React.Component {
             })}
           </ul>
         </div>
+        </Container>
+       </React.Fragment>
       </div>
     );
   }

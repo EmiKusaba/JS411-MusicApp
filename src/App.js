@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import NavBar from './Components/NavBar';
 import './App.css';
 import { Dashboard } from './Components/Dashboard';
+import { NavBar } from './Components/NavBar';
+import { LogIn } from './Components/LogIn';
 
 
 class App extends Component {
@@ -22,16 +23,19 @@ class App extends Component {
   }
 
   render() {
-    return this.state.loggedIn ? (
-      <Dashboard />
-    ) :
-      (
-        <div>
-          <NavBar
-            onLoginSubmit={this.onLoginSubmit}
-          />
-        </div>
-      );
+    return (
+      <div>
+        <NavBar />
+        {
+          this.state.loggedIn ?
+            <Dashboard />
+            :
+            <LogIn
+              onLoginSubmit={this.onLoginSubmit}
+            />
+        }
+      </div>
+    );
   }
 }
 
