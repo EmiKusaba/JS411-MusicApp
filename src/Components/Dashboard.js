@@ -1,5 +1,5 @@
 import React from 'react';
-//t { makeStyles } from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import CardActions from '@material-ui/core/CardActions';
@@ -17,7 +17,14 @@ import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Container from '@material-ui/core/Container';
-import "./Dashboard.css"
+// import "./Dashboard.css"
+
+const styles = {
+  card: {
+    display: 'inline-block',
+    transform: 'scale(0.9)',
+  }
+};
 
 //For Online here
 class OnlineSwitch extends React.Component {
@@ -158,7 +165,7 @@ class SoundQuality extends React.Component {
   }
 }
 
-export class Dashboard extends React.Component {
+class DashboardInner extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -179,55 +186,57 @@ export class Dashboard extends React.Component {
   render() {
     return (
       <div>
-            <React.Fragment>
-      <CssBaseline />
-      <Container maxWidth="sm">
-        <Card className="Card">
-          <CardContent>
-            <Typography color="textSecondary" gutterBottom>
-              Online Mode :
+        <React.Fragment>
+          <CssBaseline />
+          <Container maxWidth="sm">
+            <Card className={this.props.classes.card}>
+              <CardContent>
+                <Typography color="textSecondary" gutterBottom>
+                  Online Mode :
               </Typography>
-              <CardActions>
-            <OnlineSwitch addNotification={this.addNotification} />
-            </CardActions>
-          </CardContent>
-        </Card>
+                <CardActions>
+                  <OnlineSwitch addNotification={this.addNotification} />
+                </CardActions>
+              </CardContent>
+            </Card>
 
-        <Card className="Card">
-          <CardContent>
-            <Typography color="textSecondary" gutterBottom>
-              Master Volume
+            <Card className={this.props.classes.card}>
+              <CardContent>
+                <Typography color="textSecondary" gutterBottom>
+                  Master Volume
             </Typography>
-            <CardActions>
-            <VolumeSlider addNotification={this.addNotification} />
-            </CardActions>
-          </CardContent>
-        </Card>
+                <CardActions>
+                  <VolumeSlider addNotification={this.addNotification} />
+                </CardActions>
+              </CardContent>
+            </Card>
 
-        <Card className="Card">
-          <CardContent>
-            <Typography color="textSecondary" gutterBottom>
-              Sound Quality
+            <Card className={this.props.classes.card}>
+              <CardContent>
+                <Typography color="textSecondary" gutterBottom>
+                  Sound Quality
             </Typography>
-            <CardActions>
-            <SoundQuality addNotification={this.addNotification} />
-            </CardActions>
-          </CardContent>
-         
-        </Card>
-        <div>
-          <h3>System Notifcations</h3>
-          <ul>
-            {this.state.notifications.map((msg, i) => {
-              return (
-                <li key={i}>{msg}</li>
-              );
-            })}
-          </ul>
-        </div>
-        </Container>
-       </React.Fragment>
+                <CardActions>
+                  <SoundQuality addNotification={this.addNotification} />
+                </CardActions>
+              </CardContent>
+
+            </Card>
+            <div>
+              <h3>System Notifications</h3>
+              <ul>
+                {this.state.notifications.map((msg, i) => {
+                  return (
+                    <li key={i}>{msg}</li>
+                  );
+                })}
+              </ul>
+            </div>
+          </Container>
+        </React.Fragment>
       </div>
     );
   }
 }
+
+export const Dashboard = withStyles(styles)(DashboardInner);

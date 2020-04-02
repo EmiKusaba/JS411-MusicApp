@@ -2,3 +2,9 @@
   display:inline-block;
 
 }
+
+.cotainer {
+  display: 'flex';
+  justify-content: "space-evenly";
+  margin: '0 2px';
+}
