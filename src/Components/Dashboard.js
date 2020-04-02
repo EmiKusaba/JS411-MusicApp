@@ -188,7 +188,7 @@ class DashboardInner extends React.Component {
       <div>
         <React.Fragment>
           <CssBaseline />
-          <Container maxWidth="sm">
+          <Container fixed>
             <Card className={this.props.classes.card}>
               <CardContent>
                 <Typography color="textSecondary" gutterBottom>
